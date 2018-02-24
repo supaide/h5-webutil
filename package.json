@@ -1,0 +1,36 @@
+{
+  "name": "h5-webutil",
+  "version": "1.0.0",
+  "description": "event, http, url",
+  "main": "./dist/h5-webutil.min.js",
+  "scripts": {
+    "build": "node build/build.js"
+  },
+  "files": [
+    "src",
+    "dist/*.js"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://github.com/supaide/h5-webutil.git"
+  },
+  "keywords": [
+    "http",
+    "url"
+  ],
+  "author": "cyij",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/supaide/h5-webutil/issues"
+  },
+  "homepage": "https://github.com/supaide/h5-webutil/README.md",
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "babel-register": "^6.26.0",
+    "webpack": "^3.11.0"
+  }
+}
