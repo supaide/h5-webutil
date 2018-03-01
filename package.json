@@ -1,6 +1,6 @@
 {
   "name": "h5-webutil",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "event, http, url",
   "main": "./dist/h5-webutil.min.js",
   "scripts": {

@@ -309,9 +309,9 @@ var processBlob = function processBlob(type, filename, res, success, error) {
 
 var http = function http(url, params, success, error, options) {
   if (typeof params === 'function') {
-    success = params;
-    error = success;
     options = error;
+    error = success;
+    success = params;
     params = null;
   }
   if ((typeof success === 'undefined' ? 'undefined' : _typeof(success)) === 'object') {
@@ -445,6 +445,35 @@ http.config = function (options) {
   config.preProcess = options.preProcess ? options.preProcess : null;
   config.defaultParams = options.defaultParams ? options.defaultParams : null;
   config.urlPrefix = options.urlPrefix ? options.urlPrefix : null;
+};
+
+var setMethod = function setMethod(args0, type) {
+  var args = [];
+  if (args0.length > 0) {
+    for (var i = 0; i < args0.length; i++) {
+      args.push(args0[i]);
+    }
+  }
+  var lastArg = args.slice(-1)[0];
+  if ((typeof lastArg === 'undefined' ? 'undefined' : _typeof(lastArg)) === 'object') {
+    lastArg.method = type;
+  } else {
+    args.push({ method: type });
+  }
+  return args;
+};
+
+http.get = function () {
+  http.apply(this, setMethod(arguments, 'get'));
+};
+http.post = function () {
+  http.apply(this, setMethod(arguments, 'post'));
+};
+http.put = function () {
+  http.apply(this, setMethod(arguments, 'put'));
+};
+http.delete = function () {
+  http.apply(this, setMethod(arguments, 'delete'));
 };
 
 /* harmony default export */ __webpack_exports__["a"] = (http);

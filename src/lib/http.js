@@ -32,9 +32,9 @@ let processBlob = function (type, filename, res, success, error) {
 
 let http = function (url, params, success, error, options) {
   if (typeof params === 'function') {
-    success = params
-    error = success
     options = error
+    error = success
+    success = params
     params = null
   }
   if (typeof success === 'object') {
@@ -147,6 +147,35 @@ http.config = function (options) {
   config.preProcess = options.preProcess ? options.preProcess : null
   config.defaultParams = options.defaultParams ? options.defaultParams : null
   config.urlPrefix = options.urlPrefix ? options.urlPrefix : null
+}
+
+let setMethod = function (args0, type) {
+  let args = []
+  if (args0.length > 0) {
+    for (let i=0; i<args0.length; i++) {
+      args.push(args0[i])
+    }
+  }
+  let lastArg = args.slice(-1)[0]
+  if (typeof lastArg === 'object') {
+    lastArg.method = type
+  } else {
+    args.push({method: type})
+  }
+  return args
+}
+
+http.get = function () {
+  http.apply(this, setMethod(arguments, 'get'))
+}
+http.post = function () {
+  http.apply(this, setMethod(arguments, 'post'))
+}
+http.put = function () {
+  http.apply(this, setMethod(arguments, 'put'))
+}
+http.delete = function () {
+  http.apply(this, setMethod(arguments, 'delete'))
 }
 
 export default http
