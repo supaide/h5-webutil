@@ -86,7 +86,7 @@ let http = function (url, params, success, error, options) {
   let option0 = {
     method: method
   }
-  if (method !== 'POST' && method !== 'PUT') {
+  if (method !== 'POST' && method !== 'PUT' && method != 'PATCH') {
     let data0 = []
     for (var pair of data.entries()) {
       data0.push(pair[0] + '=' + pair[1])
@@ -174,8 +174,17 @@ http.post = function () {
 http.put = function () {
   http.apply(this, setMethod(arguments, 'put'))
 }
+http.patch = function () {
+  http.apply(this, setMethod(arguments, 'patch'))
+}
 http.delete = function () {
   http.apply(this, setMethod(arguments, 'delete'))
+}
+http.head = function () {
+  http.apply(this, setMethod(arguments, 'head'))
+}
+http.options = function () {
+  http.apply(this, setMethod(arguments, 'options'))
 }
 
 export default http

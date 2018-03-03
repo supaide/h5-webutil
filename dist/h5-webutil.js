@@ -1,5 +1,5 @@
 /*!
- * h5-webutil v1.0.0 (https://github.com/supaide/h5-webutil/README.md)
+ * h5-webutil v1.0.2 (https://github.com/supaide/h5-webutil/README.md)
  * Copyright 2018, cyij
  * MIT license
  */
@@ -363,7 +363,7 @@ var http = function http(url, params, success, error, options) {
   var option0 = {
     method: method
   };
-  if (method !== 'POST' && method !== 'PUT') {
+  if (method !== 'POST' && method !== 'PUT' && method != 'PATCH') {
     var data0 = [];
     var _iteratorNormalCompletion = true;
     var _didIteratorError = false;
@@ -472,8 +472,17 @@ http.post = function () {
 http.put = function () {
   http.apply(this, setMethod(arguments, 'put'));
 };
+http.patch = function () {
+  http.apply(this, setMethod(arguments, 'patch'));
+};
 http.delete = function () {
   http.apply(this, setMethod(arguments, 'delete'));
+};
+http.head = function () {
+  http.apply(this, setMethod(arguments, 'head'));
+};
+http.options = function () {
+  http.apply(this, setMethod(arguments, 'options'));
 };
 
 /* harmony default export */ __webpack_exports__["a"] = (http);
