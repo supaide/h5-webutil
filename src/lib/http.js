@@ -72,33 +72,39 @@ let http = function (url, params, success, error, options) {
     }
   }
 
-  let data = new FormData()
+  let postData = null
+  let getData = []
+  if (method === 'POST') {
+    postData = new FormData()
+  }
   for (let k in params) {
     if (Array.isArray(params[k])) {
       let pairs = params[k]
       for (let i = 0; i < pairs.length; i++) {
-        data.append(k, pairs[i])
+        if (postData) {
+          postData.append(k, pairs[i])
+        }
+        getData.push(k+'[]='+encodeURIComponent(pairs[i]))
       }
     } else {
-      data.append(k, params[k])
+      if (postData) {
+        postData.append(k, params[k])
+      }
+      getData.push(k+'='+encodeURIComponent(params[k]))
     }
   }
   let option0 = {
     method: method
   }
   if (method !== 'POST' && method !== 'PUT' && method != 'PATCH') {
-    let data0 = []
-    for (var pair of data.entries()) {
-      data0.push(pair[0] + '=' + pair[1])
-    }
     if (url.indexOf('?') > -1) {
-      url += '&' + data0.join('&')
+      url += '&' + getData.join('&')
     } else {
-      url += '?' + data0.join('&')
+      url += '?' + getData.join('&')
     }
   } else {
     if (method === 'POST') {
-      option0.body = data
+      option0.body = postData
     } else {
       option0.body = JSON.stringify(params)
       option0.headers = {

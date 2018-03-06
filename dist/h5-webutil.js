@@ -1,5 +1,5 @@
 /*!
- * h5-webutil v1.0.2 (https://github.com/supaide/h5-webutil/README.md)
+ * h5-webutil v1.0.3 (https://github.com/supaide/h5-webutil/README.md)
  * Copyright 2018, cyij
  * MIT license
  */
@@ -349,55 +349,39 @@ var http = function http(url, params, success, error, options) {
     }
   }
 
-  var data = new FormData();
+  var postData = null;
+  var getData = [];
+  if (method === 'POST') {
+    postData = new FormData();
+  }
   for (var _k in params) {
     if (Array.isArray(params[_k])) {
       var pairs = params[_k];
       for (var i = 0; i < pairs.length; i++) {
-        data.append(_k, pairs[i]);
+        if (postData) {
+          postData.append(_k, pairs[i]);
+        }
+        getData.push(_k + '[]=' + encodeURIComponent(pairs[i]));
       }
     } else {
-      data.append(_k, params[_k]);
+      if (postData) {
+        postData.append(_k, params[_k]);
+      }
+      getData.push(_k + '=' + encodeURIComponent(params[_k]));
     }
   }
   var option0 = {
     method: method
   };
   if (method !== 'POST' && method !== 'PUT' && method != 'PATCH') {
-    var data0 = [];
-    var _iteratorNormalCompletion = true;
-    var _didIteratorError = false;
-    var _iteratorError = undefined;
-
-    try {
-      for (var _iterator = data.entries()[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-        var pair = _step.value;
-
-        data0.push(pair[0] + '=' + pair[1]);
-      }
-    } catch (err) {
-      _didIteratorError = true;
-      _iteratorError = err;
-    } finally {
-      try {
-        if (!_iteratorNormalCompletion && _iterator.return) {
-          _iterator.return();
-        }
-      } finally {
-        if (_didIteratorError) {
-          throw _iteratorError;
-        }
-      }
-    }
-
     if (url.indexOf('?') > -1) {
-      url += '&' + data0.join('&');
+      url += '&' + getData.join('&');
     } else {
-      url += '?' + data0.join('&');
+      url += '?' + getData.join('&');
     }
   } else {
     if (method === 'POST') {
-      option0.body = data;
+      option0.body = postData;
     } else {
       option0.body = JSON.stringify(params);
       option0.headers = {
