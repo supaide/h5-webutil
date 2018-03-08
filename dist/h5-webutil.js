@@ -1,5 +1,5 @@
 /*!
- * h5-webutil v1.0.3 (https://github.com/supaide/h5-webutil/README.md)
+ * h5-webutil v1.0.5 (https://github.com/supaide/h5-webutil/README.md)
  * Copyright 2018, cyij
  * MIT license
  */
@@ -340,6 +340,8 @@ var http = function http(url, params, success, error, options) {
   var preProcess = options.preProcess !== undefined ? options.preProcess : config.preProcess;
   var blob = options.blob ? options.blob : false;
   var filename = options.filename ? options.filename : null;
+  var jsonParam = options.jsonParam ? options.jsonParam : method == 'POST' ? false : true;
+  var paramsInBody = method == 'POST' || method == 'PUT' || method == 'PATCH';
 
   params = params || {};
   if (!options.ignoreDefaultParams && config.defaultParams) {
@@ -351,7 +353,7 @@ var http = function http(url, params, success, error, options) {
 
   var postData = null;
   var getData = [];
-  if (method === 'POST') {
+  if (paramsInBody) {
     postData = new FormData();
   }
   for (var _k in params) {
@@ -373,14 +375,14 @@ var http = function http(url, params, success, error, options) {
   var option0 = {
     method: method
   };
-  if (method !== 'POST' && method !== 'PUT' && method != 'PATCH') {
+  if (!paramsInBody) {
     if (url.indexOf('?') > -1) {
       url += '&' + getData.join('&');
     } else {
       url += '?' + getData.join('&');
     }
   } else {
-    if (method === 'POST') {
+    if (!jsonParam) {
       option0.body = postData;
     } else {
       option0.body = JSON.stringify(params);
