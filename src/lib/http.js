@@ -63,6 +63,8 @@ let http = function (url, params, success, error, options) {
   let preProcess = options.preProcess !== undefined ? options.preProcess : config.preProcess
   let blob = options.blob ? options.blob : false
   let filename = options.filename ? options.filename : null
+  let jsonParam = options.jsonParam ? options.jsonParam : (method == 'POST' ? false : true)
+  let paramsInBody = method == 'POST' || method == 'PUT' || method == 'PATCH'
 
   params = params || {}
   if (!options.ignoreDefaultParams && config.defaultParams) {
@@ -74,7 +76,7 @@ let http = function (url, params, success, error, options) {
 
   let postData = null
   let getData = []
-  if (method === 'POST') {
+  if (paramsInBody) {
     postData = new FormData()
   }
   for (let k in params) {
@@ -96,14 +98,14 @@ let http = function (url, params, success, error, options) {
   let option0 = {
     method: method
   }
-  if (method !== 'POST' && method !== 'PUT' && method != 'PATCH') {
+  if (!paramsInBody) {
     if (url.indexOf('?') > -1) {
       url += '&' + getData.join('&')
     } else {
       url += '?' + getData.join('&')
     }
   } else {
-    if (method === 'POST') {
+    if (!jsonParam) {
       option0.body = postData
     } else {
       option0.body = JSON.stringify(params)
